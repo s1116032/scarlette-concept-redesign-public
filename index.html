@@ -1,176 +1,894 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scarlette｜試算表式 No-Code 企業雲端資料庫</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Inter:wght@600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script>tailwind.config={theme:{extend:{colors:{brand:'#16a34a'}}}}</script>
-<style>
-body{font-family:'Noto Sans TC','Inter',sans-serif}
-.glass-card{background:rgba(15,23,42,0.75);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.1)}
-.bg-grid-pattern{background-image:radial-gradient(rgba(255,255,255,0.08) 1px,transparent 1px);background-size:24px 24px}
-</style>
-</head>
-<body class="bg-[#fafafa] text-slate-800">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scarlette｜試算表式 No-Code 企業雲端資料庫</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Inter:wght@600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: "#16a34a",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Noto Sans TC", "Inter", sans-serif;
+      }
+      .glass-card {
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .bg-grid-pattern {
+        background-image: radial-gradient(
+          rgba(255, 255, 255, 0.08) 1px,
+          transparent 1px
+        );
+        background-size: 24px 24px;
+      }
+    </style>
+  </head>
+  <body class="bg-[#fafafa] text-slate-800">
+    <!-- 頂部公告 -->
+    <div
+      id="bar"
+      class="sticky top-0 z-50 bg-[#14532d] text-white text-[13px] px-4 py-2.5 flex justify-between items-center"
+    >
+      <div class="flex gap-2 items-center truncate">
+        <span>🎉</span>
+        <span
+          >你的 AI 協作夥伴已上線：<b class="text-green-200"
+            >Scarlette AI Agent</b
+          >，免安裝串接，一次設定全團隊即刻受惠</span
+        >
+        <button
+          onclick="openModal('立即體驗')"
+          class="ml-2 text-green-200 hover:text-white underline"
+        >
+          [ 立即體驗 → ]
+        </button>
+      </div>
+      <button
+        aria-label="關閉公告"
+        onclick="
+          document.getElementById('bar').style.display = 'none';
+          document.getElementById('header').style.top = '0';
+        "
+        class="ml-4 text-white/70 hover:text-white"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
 
-<div id="bar" class="sticky top-0 z-50 bg-[#14532d] text-white text-[13px] px-4 py-2.5 flex justify-between items-center">
-<div class="flex gap-2 items-center truncate"><span>🎉</span><span>你的 AI 協作夥伴已上線：<b class="text-green-200">Scarlette AI Agent</b>，免安裝串接，一次設定全團隊即刻受惠</span><button onclick="openModal('立即體驗')" class="ml-2 text-green-200 hover:text-white underline">[ 立即體驗 → ]</button></div>
-<button aria-label="關閉公告" onclick="document.getElementById('bar').style.display='none';document.getElementById('header').style.top='0'" class="ml-4 text-white/70 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-</div>
+    <!-- Header -->
+    <header
+      id="header"
+      class="sticky bg-white/95 backdrop-blur border-b border-slate-100 z-40"
+      style="top: 38px"
+    >
+      <div
+        class="max-w-7xl mx-auto px-6 h-[72px] flex justify-between items-center"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 rounded-xl bg-gradient-to-br from-green-500 to-green-700 text-white flex items-center justify-center shadow"
+          >
+            <i class="fa-solid fa-table-cells-row-unlock"></i>
+          </div>
+          <div class="font-black text-xl tracking-tight">Scarlette</div>
+        </div>
+        <nav class="hidden lg:flex gap-6 text-sm text-slate-600">
+          <a href="#" class="hover:text-brand">產品介紹</a>
+          <a href="#why" class="hover:text-brand">為何選擇 Scarlette</a>
+          <a href="#" class="hover:text-brand">客戶案例</a>
+          <a href="#" class="hover:text-brand">範本庫</a>
+          <a href="#" class="hover:text-brand">核心功能</a>
+          <a href="#" class="hover:text-brand">方案定價</a>
+        </nav>
+        <div class="flex gap-2 items-center">
+          <button
+            class="hidden sm:block px-4 py-2 text-sm font-bold hover:bg-slate-50 rounded-lg"
+          >
+            登入
+          </button>
+          <button
+            class="px-4 py-2 text-sm font-bold text-brand bg-green-50 border border-green-200 rounded-lg"
+          >
+            免費註冊
+          </button>
+          <button
+            class="px-4 py-2 text-sm font-bold text-white bg-brand hover:bg-green-700 rounded-lg"
+          >
+            預約諮詢
+          </button>
+        </div>
+      </div>
+    </header>
 
-<header id="header" class="sticky bg-white/95 backdrop-blur border-b border-slate-100 z-40" style="top:38px">
-<div class="max-w-7xl mx-auto px-6 h-[72px] flex justify-between items-center">
-<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gradient-to-br from-green-500 to-green-700 text-white flex items-center justify-center shadow"><i class="fa-solid fa-table-cells-row-unlock"></i></div><div class="font-black text-xl tracking-tight">Scarlette</div></div>
-<nav class="hidden lg:flex gap-6 text-sm text-slate-600">
-<a href="#" class="hover:text-brand">產品介紹</a>
-<a href="#why" class="hover:text-brand">為何選擇 Scarlette</a>
-<a href="#" class="hover:text-brand">客戶案例</a>
-<a href="#" class="hover:text-brand">範本庫</a>
-<a href="#" class="hover:text-brand">核心功能</a>
-<a href="#" class="hover:text-brand">方案定價</a>
-</nav>
-<div class="flex gap-2 items-center">
-<button class="hidden sm:block px-4 py-2 text-sm font-bold hover:bg-slate-50 rounded-lg">登入</button>
-<button class="px-4 py-2 text-sm font-bold text-brand bg-green-50 border border-green-200 rounded-lg">免費註冊</button>
-<button class="px-4 py-2 text-sm font-bold text-white bg-brand hover:bg-green-700 rounded-lg">預約諮詢</button>
-</div>
-</div>
-</header>
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-b from-green-50 to-white py-16 lg:py-24">
+      <div
+        class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center"
+      >
+        <div class="space-y-5">
+          <div
+            class="inline-flex gap-2 items-center px-3 py-1 rounded-full bg-green-100 border border-green-200 text-green-800 text-xs font-bold"
+          >
+            <span
+              class="w-2 h-2 bg-green-500 rounded-full animate-pulse"
+            ></span>
+            你的 AI 協作夥伴，已經上線
+          </div>
+          <h1 class="text-5xl lg:text-6xl font-black leading-[0.9]">
+            Scarlette<br /><span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-800"
+              >AI Agent</span
+            >
+          </h1>
+          <p class="text-[17px] text-slate-600 leading-relaxed">
+            免安裝、即串現有資料庫，一次設定，全團隊都能用。<br />把重複的行政交給
+            AI，你專注在更重要的決策上。
+          </p>
+          <button
+            class="px-8 py-3.5 bg-brand hover:bg-green-700 text-white font-bold rounded-xl shadow"
+          >
+            立即免費體驗 →
+          </button>
+          <div
+            class="flex gap-4 text-xs font-semibold text-slate-500 pt-4 border-t border-slate-200"
+          >
+            <span>✓ 直覺試算表介面</span>
+            <span>✓ 全自動 AI Agent</span>
+            <span>✓ 企業級權限</span>
+          </div>
+        </div>
+        <div
+          class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden"
+        >
+          <div
+            class="bg-slate-900 text-white px-4 py-2.5 text-xs flex justify-between"
+          >
+            <span>Scarlette Workspace / 企業採購.db</span>
+            <span class="text-green-300">● AI 同步中</span>
+          </div>
+          <div class="p-5 space-y-3 bg-slate-50">
+            <div
+              class="bg-white border rounded-xl p-3 flex justify-between text-xs"
+            >
+              <b>1. 第一線表單填寫</b>
+              <span class="bg-blue-100 text-blue-700 px-2 rounded">Form</span>
+            </div>
+            <div class="text-center">
+              <span
+                class="inline-block bg-brand text-white text-[10px] px-3 py-1 rounded-full"
+                >Scarlette AI Agent 判讀核准</span
+              >
+            </div>
+            <div class="bg-white border-2 border-green-300 rounded-xl p-3">
+              <div class="text-xs font-bold mb-2">
+                2. 試算表式 No-Code 引擎
+                <span
+                  class="ml-2 bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded"
+                  >免寫程式</span
+                >
+              </div>
+              <div
+                class="grid grid-cols-4 text-[11px] border rounded overflow-hidden"
+              >
+                <div class="bg-slate-100 p-1.5 font-bold">單號</div>
+                <div class="bg-slate-100 p-1.5 font-bold">專案</div>
+                <div class="bg-slate-100 p-1.5 font-bold">金額</div>
+                <div class="bg-slate-100 p-1.5 font-bold">AI審核</div>
+                <div class="p-1.5">#PO-2026</div>
+                <div class="p-1.5">行銷採購</div>
+                <div class="p-1.5">$45,000</div>
+                <div class="p-1.5 text-green-700 font-bold">符合預算</div>
+              </div>
+            </div>
+            <div
+              class="bg-white border rounded-xl p-3 flex justify-between text-xs"
+            >
+              <b>3. 全團隊即時受惠</b>
+              <span class="bg-emerald-100 text-emerald-700 px-2 rounded"
+                >Auto</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section class="bg-gradient-to-b from-green-50 to-white py-16 lg:py-24">
-<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-<div class="space-y-5">
-<div class="inline-flex gap-2 items-center px-3 py-1 rounded-full bg-green-100 border border-green-200 text-green-800 text-xs font-bold"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>你的 AI 協作夥伴，已經上線</div>
-<h1 class="text-5xl lg:text-6xl font-black leading-[0.9]">Scarlette<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-800">AI Agent</span></h1>
-<p class="text-[17px] text-slate-600 leading-relaxed">免安裝、即串現有資料庫，一次設定，全團隊都能用。<br>把重複的行政交給 AI，你專注在更重要的決策上。</p>
-<button class="px-8 py-3.5 bg-brand hover:bg-green-700 text-white font-bold rounded-xl shadow">立即免費體驗 →</button>
-<div class="flex gap-4 text-xs font-semibold text-slate-500 pt-4 border-t border-slate-200"><span>✓ 直覺試算表介面</span><span>✓ 全自動 AI Agent</span><span>✓ 企業級權限</span></div>
-</div>
-<div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-<div class="bg-slate-900 text-white px-4 py-2.5 text-xs flex justify-between"><span>Scarlette Workspace / 企業採購.db</span><span class="text-green-300">● AI 同步中</span></div>
-<div class="p-5 space-y-3 bg-slate-50">
-<div class="bg-white border rounded-xl p-3 flex justify-between text-xs"><b>1. 第一線表單填寫</b><span class="bg-blue-100 text-blue-700 px-2 rounded">Form</span></div>
-<div class="text-center"><span class="inline-block bg-brand text-white text-[10px] px-3 py-1 rounded-full">Scarlette AI Agent 判讀核准</span></div>
-<div class="bg-white border-2 border-green-300 rounded-xl p-3"><div class="text-xs font-bold mb-2">2. 試算表式 No-Code 引擎 <span class="ml-2 bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded">免寫程式</span></div><div class="grid grid-cols-4 text-[11px] border rounded overflow-hidden"><div class="bg-slate-100 p-1.5 font-bold">單號</div><div class="bg-slate-100 p-1.5 font-bold">專案</div><div class="bg-slate-100 p-1.5 font-bold">金額</div><div class="bg-slate-100 p-1.5 font-bold">AI審核</div><div class="p-1.5">#PO-2026</div><div class="p-1.5">行銷採購</div><div class="p-1.5">$45,000</div><div class="p-1.5 text-green-700 font-bold">符合預算</div></div></div>
-<div class="bg-white border rounded-xl p-3 flex justify-between text-xs"><b>3. 全團隊即時受惠</b><span class="bg-emerald-100 text-emerald-700 px-2 rounded">Auto</span></div>
-</div>
-</div>
-</div>
-</div>
-</section>
+    <!-- Why Section -->
+    <section
+      id="why"
+      class="py-20 bg-white border-y border-slate-200 text-center"
+    >
+      <div class="max-w-3xl mx-auto px-6 space-y-6">
+        <div
+          class="inline-block px-4 py-1.5 rounded-full bg-green-100 text-green-800 border border-green-200 text-sm font-bold"
+        >
+          為第一線工作者打造的 No-Code x AI 數位轉型平台
+        </div>
+        <h2 class="text-3xl md:text-4xl font-black leading-tight">
+          最懂公司流程的，其實是每天在第一線的業務、行政與專案夥伴。
+        </h2>
+        <p class="text-slate-600 leading-relaxed">
+          他們不需要學會寫程式，只需要一個讓想法快速變成系統的工具。<br />Scarlette
+          讓你用直覺的表單與自動化，打造專屬的企業系統。
+        </p>
+        <div class="flex justify-center gap-3 pt-2">
+          <button class="px-7 py-3 bg-brand text-white font-bold rounded-xl">
+            免費註冊
+          </button>
+          <button
+            class="px-7 py-3 bg-slate-100 border border-slate-300 font-bold rounded-xl"
+          >
+            預約產品介紹
+          </button>
+        </div>
+      </div>
+    </section>
 
-<section id="why" class="py-20 bg-white border-y border-slate-200 text-center">
-<div class="max-w-3xl mx-auto px-6 space-y-6">
-<div class="inline-block px-4 py-1.5 rounded-full bg-green-100 text-green-800 border border-green-200 text-sm font-bold">為第一線工作者打造的 No-Code x AI 數位轉型平台</div>
-<h2 class="text-3xl md:text-4xl font-black leading-tight">最懂公司流程的，其實是每天在第一線的業務、行政與專案夥伴。</h2>
-<p class="text-slate-600 leading-relaxed">他們不需要學會寫程式，只需要一個讓想法快速變成系統的工具。<br>Scarlette 讓你用直覺的表單與自動化，打造專屬的企業系統。</p>
-<div class="flex justify-center gap-3 pt-2"><button class="px-7 py-3 bg-brand text-white font-bold rounded-xl">免費註冊</button><button class="px-7 py-3 bg-slate-100 border border-slate-300 font-bold rounded-xl">預約產品介紹</button></div>
-</div>
-</section>
+    <!-- CTA Section -->
+    <section id="cta" class="py-16 bg-[#0b1912] text-white text-center">
+      <div class="max-w-3xl mx-auto px-6 space-y-6">
+        <h2 class="text-4xl font-black">馬上開始，用 Scarlette 打造你的系統</h2>
+        <p class="text-green-200">無需信用卡，1 分鐘註冊即刻啟用</p>
+        <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <button
+            class="flex-1 py-3.5 bg-brand hover:bg-green-600 font-bold rounded-xl"
+          >
+            建立我的帳號
+          </button>
+          <!-- Google 按鈕 -->
+          <button
+            class="flex-1 py-3.5 bg-white text-slate-800 font-bold rounded-xl flex items-center justify-center gap-2 shadow"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 48 48"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill="#EA4335"
+                d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+              />
+              <path
+                fill="#4285F4"
+                d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+              />
+              <path
+                fill="#34A853"
+                d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+              />
+            </svg>
+            使用 Google 帳號繼續
+          </button>
+        </div>
+      </div>
+    </section>
 
-<section id="cta" class="py-16 bg-[#0b1912] text-white text-center">
-<div class="max-w-3xl mx-auto px-6 space-y-6">
-<h2 class="text-4xl font-black">馬上開始，用 Scarlette 打造你的系統</h2>
-<p class="text-green-200">無需信用卡，1 分鐘註冊即刻啟用</p>
-<div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-<button class="flex-1 py-3.5 bg-brand hover:bg-green-600 font-bold rounded-xl">建立我的帳號</button>
-<!-- Google 按鈕 - 紅黃綠藍 G -->
-<button class="flex-1 py-3.5 bg-white text-slate-800 font-bold rounded-xl flex items-center justify-center gap-2 shadow">
-<svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-<path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-<path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-<path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-</svg>
-使用 Google 帳號繼續
-</button>
-</div>
-</div>
-</section>
+    <!-- Footer -->
+    <section
+      class="relative bg-[#060911] py-10 px-4 sm:px-6 lg:px-8 overflow-hidden"
+    >
+      <div
+        class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[450px] bg-blue-600/15 blur-[140px] rounded-full pointer-events-none"
+      ></div>
+      <div
+        class="absolute bottom-10 right-10 w-80 h-80 bg-purple-600/15 blur-[120px] rounded-full pointer-events-none"
+      ></div>
+      <footer
+        class="w-full max-w-7xl mx-auto glass-card rounded-3xl p-6 lg:p-8 relative z-10 shadow-2xl border border-slate-800"
+      >
+        <div
+          class="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none rounded-3xl"
+        ></div>
 
-<!-- 底部深藍 -->
-<section class="relative bg-[#060911] py-10 px-4 sm:px-6 lg:px-8 overflow-hidden">
-<div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[450px] bg-blue-600/15 blur-[140px] rounded-full pointer-events-none"></div>
-<div class="absolute bottom-10 right-10 w-80 h-80 bg-purple-600/15 blur-[120px] rounded-full pointer-events-none"></div>
-<footer class="w-full max-w-7xl mx-auto glass-card rounded-3xl p-6 lg:p-8 relative z-10 shadow-2xl border border-slate-800">
-<div class="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none rounded-3xl"></div>
+        <!-- 底部 Logo -->
+        <div
+          class="relative z-10 pb-6 border-b border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4"
+        >
+          <div class="flex items-center gap-4">
+            <div
+              class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500 to-green-700 text-white flex items-center justify-center shadow-lg"
+            >
+              <i class="fa-solid fa-table-cells-row-unlock text-xl"></i>
+            </div>
+            <div>
+              <div class="text-white font-black text-2xl">Scarlette</div>
+              <div class="text-xs text-slate-400">
+                為非工程背景團隊設計的 No-Code 工作平台
+              </div>
+            </div>
+          </div>
+        </div>
 
-<!-- 底部 Logo - 已與頂部一致，不再是 S -->
-<div class="relative z-10 pb-6 border-b border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500 to-green-700 text-white flex items-center justify-center shadow-lg">
-<i class="fa-solid fa-table-cells-row-unlock text-xl"></i>
-</div>
-<div><div class="text-white font-black text-2xl">Scarlette</div><div class="text-xs text-slate-400">為非工程背景團隊設計的 No-Code 工作平台</div></div>
-</div>
+        <div
+          class="relative z-10 py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8"
+        >
+          <div class="lg:col-span-3 space-y-3">
+            <div
+              class="flex items-center gap-2 border-l-2 border-green-500 pl-2.5"
+            >
+              <h2 class="text-white font-bold text-sm">產品</h2>
+            </div>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-green-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-green-500/10 flex items-center justify-center text-green-400"
+                  >
+                    <i class="fa-solid fa-tags text-[11px]"></i>
+                  </div>
+                  方案與定價
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-green-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-green-500/10 flex items-center justify-center text-green-400"
+                  >
+                    <i class="fa-solid fa-server text-[11px]"></i>
+                  </div>
+                  私有部署方案
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-green-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-green-500/10 flex items-center justify-center text-green-400"
+                  >
+                    <i class="fa-solid fa-shield-halved text-[11px]"></i>
+                  </div>
+                  資安說明
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-green-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-green-500/10 flex items-center justify-center text-green-400"
+                  >
+                    <i class="fa-solid fa-list-check text-[11px]"></i>
+                  </div>
+                  功能總覽
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-green-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-green-500/10 flex items-center justify-center text-green-400"
+                  >
+                    <i class="fa-solid fa-code-compare text-[11px]"></i>
+                  </div>
+                  產品比較
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="lg:col-span-3 space-y-3">
+            <div
+              class="flex items-center gap-2 border-l-2 border-blue-500 pl-2.5"
+            >
+              <h2 class="text-white font-bold text-sm">資源</h2>
+            </div>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"
+                  >
+                    <i class="fa-solid fa-graduation-cap text-[11px]"></i>
+                  </div>
+                  學習中心
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"
+                  >
+                    <i class="fa-solid fa-code text-[11px]"></i>
+                  </div>
+                  API 文件
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"
+                  >
+                    <i class="fa-solid fa-chalkboard-user text-[11px]"></i>
+                  </div>
+                  線上課程
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"
+                  >
+                    <i class="fa-solid fa-briefcase text-[11px]"></i>
+                  </div>
+                  客戶案例
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"
+                  >
+                    <i class="fa-solid fa-handshake text-[11px]"></i>
+                  </div>
+                  合作夥伴計畫
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"
+                  >
+                    <i class="fa-solid fa-building-columns text-[11px]"></i>
+                  </div>
+                  校園推廣計畫
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"
+                  >
+                    <i class="fa-solid fa-circle-question text-[11px]"></i>
+                  </div>
+                  常見問題
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="lg:col-span-3 space-y-3">
+            <div
+              class="flex items-center gap-2 border-l-2 border-purple-500 pl-2.5"
+            >
+              <h2 class="text-white font-bold text-sm">應用情境</h2>
+            </div>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-briefcase text-[11px]"></i>
+                  </div>
+                  業務管理
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-boxes-stacked text-[11px]"></i>
+                  </div>
+                  庫存管理
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-cart-shopping text-[11px]"></i>
+                  </div>
+                  採購管理
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-industry text-[11px]"></i>
+                  </div>
+                  製造管理
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-users text-[11px]"></i>
+                  </div>
+                  人資管理
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-list-check text-[11px]"></i>
+                  </div>
+                  專案管理
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-bullhorn text-[11px]"></i>
+                  </div>
+                  行銷活動
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-calculator text-[11px]"></i>
+                  </div>
+                  財務會計
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-headset text-[11px]"></i>
+                  </div>
+                  客戶服務
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-file-lines text-[11px]"></i>
+                  </div>
+                  行政庶務
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-computer text-[11px]"></i>
+                  </div>
+                  IT資訊
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"
+                  >
+                    <i class="fa-solid fa-flask text-[11px]"></i>
+                  </div>
+                  研發管理
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="lg:col-span-3 space-y-3">
+            <div
+              class="flex items-center gap-2 border-l-2 border-amber-500 pl-2.5"
+            >
+              <h2 class="text-white font-bold text-sm">關於</h2>
+            </div>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"
+                  >
+                    <i class="fa-solid fa-circle-info text-[11px]"></i>
+                  </div>
+                  關於 Scarlette
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"
+                  >
+                    <i class="fa-solid fa-rocket text-[11px]"></i>
+                  </div>
+                  為何我們打造 Scarlette
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"
+                  >
+                    <i class="fa-solid fa-blog text-[11px]"></i>
+                  </div>
+                  部落格
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"
+                  >
+                    <i class="fa-solid fa-comments text-[11px]"></i>
+                  </div>
+                  社群論壇
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"
+                  >
+                    <i class="fa-solid fa-newspaper text-[11px]"></i>
+                  </div>
+                  最新消息
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"
+                >
+                  <div
+                    class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"
+                  >
+                    <i class="fa-solid fa-envelope-open-text text-[11px]"></i>
+                  </div>
+                  聯絡我們 - 概念展示用
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="relative z-10 pt-6 border-t border-slate-800/80 flex flex-col lg:flex-row items-center justify-between gap-6"
+        >
+          <div class="flex items-center gap-6">
+            <a
+              href="#"
+              class="group text-2xl text-blue-400 hover:text-white transition-colors"
+            >
+              <i
+                class="fa-brands fa-facebook-f group-hover:scale-110 transition-transform"
+              ></i>
+            </a>
+            <a
+              href="#"
+              class="group text-2xl text-pink-400 hover:text-white transition-colors"
+            >
+              <i
+                class="fa-brands fa-instagram group-hover:scale-110 transition-transform"
+              ></i>
+            </a>
+            <a
+              href="#"
+              class="group text-2xl text-red-500 hover:text-white transition-colors"
+            >
+              <i
+                class="fa-brands fa-youtube group-hover:scale-110 transition-transform"
+              ></i>
+            </a>
+            <a
+              href="#"
+              class="group text-2xl text-gray-200 hover:text-white transition-colors"
+            >
+              <i
+                class="fa-brands fa-x-twitter group-hover:scale-110 transition-transform"
+              ></i>
+            </a>
+          </div>
+          <div class="flex gap-3">
+            <div
+              class="flex items-center gap-3 bg-slate-900/90 px-5 py-2.5 rounded-2xl border border-slate-700 text-white transition-all duration-300 hover:-translate-y-1 hover:border-green-400 hover:shadow-lg hover:shadow-green-500/25 cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                shape-rendering="geometricPrecision"
+                text-rendering="geometricPrecision"
+                image-rendering="optimizeQuality"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                viewBox="0 0 466 511.98"
+                class="w-5 h-5 shrink-0"
+              >
+                <g id="Layer_x0020_1">
+                  <path
+                    fill="#EA4335"
+                    fill-rule="nonzero"
+                    d="M199.9 237.8l-198.5 232.37c7.22,24.57 30.16,41.81 55.8,41.81 11.16,0 20.93,-2.79 29.3,-8.37l0 0 244.16 -139.46 -130.76 -126.35z"
+                  />
+                  <path
+                    fill="#FBBC04"
+                    fill-rule="nonzero"
+                    d="M433.91 205.1l0 0 -104.65 -60 -111.61 110.22 113.01 108.83 104.64 -58.6c18.14,-9.77 30.7,-29.3 30.7,-50.23 -1.4,-20.93 -13.95,-40.46 -32.09,-50.22z"
+                  />
+                  <path
+                    fill="#34A853"
+                    fill-rule="nonzero"
+                    d="M199.42 273.45l129.85 -128.35 -241.37 -136.73c-8.37,-5.58 -19.54,-8.37 -30.7,-8.37 -26.5,0 -50.22,18.14 -55.8,41.86 0,0 0,0 0,0l198.02 231.59z"
+                  />
+                  <path
+                    fill="#4285F4"
+                    fill-rule="nonzero"
+                    d="M1.39 41.86c-1.39,4.18 -1.39,9.77 -1.39,15.34l0 397.64c0,5.57 0,9.76 1.4,15.34l216.27 -214.86 -216.28 -213.46z"
+                  />
+                </g>
+              </svg>
+              <div class="text-left leading-none">
+                <div class="text-[9px] text-slate-400">GET IT ON</div>
+                <div class="text-sm font-bold">Google Play</div>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-3 bg-slate-900/90 px-5 py-2.5 rounded-2xl border border-slate-700 text-white transition-all duration-300 hover:-translate-y-1 hover:border-green-400 hover:shadow-lg hover:shadow-green-500/25 cursor-pointer"
+            >
+              <i class="fa-brands fa-apple text-xl"></i>
+              <div class="text-left leading-none">
+                <div class="text-[9px] text-slate-400">Download on the</div>
+                <div class="text-sm font-bold">App Store</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </section>
+    <div
+      class="bg-[#060911] text-slate-500 text-[11px] py-3 text-center border-t border-slate-800"
+    >
+      © 2026 Scarlette Concept Project. All rights reserved. | 使用者條款 |
+      隱私權政策 | ⚠️ 本網站為作品集展示用，與 Ragic Inc. 無關
+    </div>
 
-</div>
-
-<div class="relative z-10 py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8">
-<div class="lg:col-span-3 space-y-3"><div class="flex items-center gap-2 border-l-2 border-green-500 pl-2.5"><h2 class="text-white font-bold text-sm">產品</h2></div><ul class="space-y-2.5 text-xs text-slate-300">
-<li><a href="#" class="flex items-center gap-2.5 hover:text-green-400 transition-colors"><div class="w-5 h-5 rounded bg-green-500/10 flex items-center justify-center text-green-400"><i class="fa-solid fa-tags text-[11px]"></i></div>方案與定價</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-green-400 transition-colors"><div class="w-5 h-5 rounded bg-green-500/10 flex items-center justify-center text-green-400"><i class="fa-solid fa-server text-[11px]"></i></div>私有部署方案</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-green-400 transition-colors"><div class="w-5 h-5 rounded bg-green-500/10 flex items-center justify-center text-green-400"><i class="fa-solid fa-shield-halved text-[11px]"></i></div>資安說明</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-green-400 transition-colors"><div class="w-5 h-5 rounded bg-green-500/10 flex items-center justify-center text-green-400"><i class="fa-solid fa-list-check text-[11px]"></i></div>功能總覽</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-green-400 transition-colors"><div class="w-5 h-5 rounded bg-green-500/10 flex items-center justify-center text-green-400"><i class="fa-solid fa-code-compare text-[11px]"></i></div>產品比較</a></li>
-</ul></div>
-<div class="lg:col-span-3 space-y-3"><div class="flex items-center gap-2 border-l-2 border-blue-500 pl-2.5"><h2 class="text-white font-bold text-sm">資源</h2></div><ul class="space-y-2.5 text-xs text-slate-300">
-<li><a href="#" class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"><div class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"><i class="fa-solid fa-graduation-cap text-[11px]"></i></div>學習中心</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"><div class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"><i class="fa-solid fa-code text-[11px]"></i></div>API 文件</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"><div class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"><i class="fa-solid fa-chalkboard-user text-[11px]"></i></div>線上課程</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"><div class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"><i class="fa-solid fa-briefcase text-[11px]"></i></div>客戶案例</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"><div class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"><i class="fa-solid fa-handshake text-[11px]"></i></div>合作夥伴計畫</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"><div class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"><i class="fa-solid fa-building-columns text-[11px]"></i></div>校園推廣計畫</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-blue-400 transition-colors"><div class="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"><i class="fa-solid fa-circle-question text-[11px]"></i></div>常見問題</a></li>
-</ul></div>
-<div class="lg:col-span-3 space-y-3"><div class="flex items-center gap-2 border-l-2 border-purple-500 pl-2.5"><h2 class="text-white font-bold text-sm">應用情境</h2></div><ul class="space-y-2.5 text-xs text-slate-300">
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-briefcase text-[11px]"></i></div>業務管理</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-boxes-stacked text-[11px]"></i></div>庫存管理</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-cart-shopping text-[11px]"></i></div>採購管理</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-industry text-[11px]"></i></div>製造管理</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-users text-[11px]"></i></div>人資管理</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-list-check text-[11px]"></i></div>專案管理</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-bullhorn text-[11px]"></i></div>行銷活動</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-calculator text-[11px]"></i></div>財務會計</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-headset text-[11px]"></i></div>客戶服務</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-file-lines text-[11px]"></i></div>行政庶務</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-computer text-[11px]"></i></div>IT資訊</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-purple-400 transition-colors"><div class="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center text-purple-400"><i class="fa-solid fa-flask text-[11px]"></i></div>研發管理</a></li>
-</ul></div>
-<div class="lg:col-span-3 space-y-3"><div class="flex items-center gap-2 border-l-2 border-amber-500 pl-2.5"><h2 class="text-white font-bold text-sm">關於</h2></div><ul class="space-y-2.5 text-xs text-slate-300">
-<li><a href="#" class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"><div class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"><i class="fa-solid fa-circle-info text-[11px]"></i></div>關於 Scarlette</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"><div class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"><i class="fa-solid fa-rocket text-[11px]"></i></div>為何我們打造 Scarlette</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"><div class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"><i class="fa-solid fa-blog text-[11px]"></i></div>部落格</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"><div class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"><i class="fa-solid fa-comments text-[11px]"></i></div>社群論壇</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"><div class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"><i class="fa-solid fa-newspaper text-[11px]"></i></div>最新消息</a></li>
-<li><a href="#" class="flex items-center gap-2.5 hover:text-amber-400 transition-colors"><div class="w-5 h-5 rounded bg-amber-500/10 flex items-center justify-center text-amber-400"><i class="fa-solid fa-envelope-open-text text-[11px]"></i></div>聯絡我們 - 概念展示用</a></li>
-</ul></div>
-</div>
-<div class="relative z-10 pt-6 border-t border-slate-800/80 flex flex-col lg:flex-row items-center justify-between gap-6">
-<div class="flex items-center gap-6">
-<a href="#" class="group text-2xl text-blue-400 hover:text-white transition-colors"><i class="fa-brands fa-facebook-f group-hover:scale-110 transition-transform"></i></a>
-<a href="#" class="group text-2xl text-pink-400 hover:text-white transition-colors"><i class="fa-brands fa-instagram group-hover:scale-110 transition-transform"></i></a>
-<a href="#" class="group text-2xl text-red-500 hover:text-white transition-colors"><i class="fa-brands fa-youtube group-hover:scale-110 transition-transform"></i></a>
-<a href="#" class="group text-2xl text-gray-200 hover:text-white transition-colors"><i class="fa-brands fa-x-twitter group-hover:scale-110 transition-transform"></i></a>
-</div>
-<div class="flex gap-3">
-<div class="flex items-center gap-3 bg-slate-900/90 px-5 py-2.5 rounded-2xl border border-slate-700 text-white transition-all duration-300 hover:-translate-y-1 hover:border-green-400 hover:shadow-lg hover:shadow-green-500/25 cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 466 511.98" class="w-5 h-5 shrink-0"><g id="Layer_x0020_1"><path fill="#EA4335" fill-rule="nonzero" d="M199.9 237.8l-198.5 232.37c7.22,24.57 30.16,41.81 55.8,41.81 11.16,0 20.93,-2.79 29.3,-8.37l0 0 244.16 -139.46 -130.76 -126.35z"/><path fill="#FBBC04" fill-rule="nonzero" d="M433.91 205.1l0 0 -104.65 -60 -111.61 110.22 113.01 108.83 104.64 -58.6c18.14,-9.77 30.7,-29.3 30.7,-50.23 -1.4,-20.93 -13.95,-40.46 -32.09,-50.22z"/><path fill="#34A853" fill-rule="nonzero" d="M199.42 273.45l129.85 -128.35 -241.37 -136.73c-8.37,-5.58 -19.54,-8.37 -30.7,-8.37 -26.5,0 -50.22,18.14 -55.8,41.86 0,0 0,0 0,0l198.02 231.59z"/><path fill="#4285F4" fill-rule="nonzero" d="M1.39 41.86c-1.39,4.18 -1.39,9.77 -1.39,15.34l0 397.64c0,5.57 0,9.76 1.4,15.34l216.27 -214.86 -216.28 -213.46z"/></g></svg><div class="text-left leading-none"><div class="text-[9px] text-slate-400">GET IT ON</div><div class="text-sm font-bold">Google Play</div></div></div>
-<div class="flex items-center gap-3 bg-slate-900/90 px-5 py-2.5 rounded-2xl border border-slate-700 text-white transition-all duration-300 hover:-translate-y-1 hover:border-green-400 hover:shadow-lg hover:shadow-green-500/25 cursor-pointer"><i class="fa-brands fa-apple text-xl"></i><div class="text-left leading-none"><div class="text-[9px] text-slate-400">Download on the</div><div class="text-sm font-bold">App Store</div></div></div>
-</div>
-</div>
-</footer>
-</section>
-<div class="bg-[#060911] text-slate-500 text-[11px] py-3 text-center border-t border-slate-800">© 2026 Scarlette Concept Project. All rights reserved. | 使用者條款 | 隱私權政策 | ⚠️ 本網站為作品集展示用，與 Ragic Inc. 無關</div>
-
-<div id="modal" class="fixed inset-0 z-[60] hidden bg-black/50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-3"><h3 id="mTitle" class="font-bold text-lg"></h3><p id="mDesc" class="text-sm text-slate-600"></p><div class="text-right"><button onclick="closeModal()" class="px-4 py-2 bg-brand text-white rounded-xl text-sm font-bold">返回上一頁</button></div></div></div>
-<script>
-function closeBar(){document.getElementById('bar').style.display='none';document.getElementById('header').style.top='0';localStorage.setItem('scarlette_bar','1');}
-if(localStorage.getItem('scarlette_bar')){document.getElementById('bar').style.display='none';document.getElementById('header').style.top='0';}
-function openModal(t){document.getElementById('mTitle').innerText=t;document.getElementById('mDesc').innerText='這是「'+t+'」的概念展示頁面，請返回上一頁。';document.getElementById('modal').classList.remove('hidden');}
-function closeModal(){document.getElementById('modal').classList.add('hidden');}
-</script>
-</body>
+    <!-- Modal -->
+    <div
+      id="modal"
+      class="fixed inset-0 z-[60] hidden bg-black/50 flex items-center justify-center p-4"
+    >
+      <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-3">
+        <h3 id="mTitle" class="font-bold text-lg"></h3>
+        <p id="mDesc" class="text-sm text-slate-600"></p>
+        <div class="text-right">
+          <button
+            onclick="closeModal()"
+            class="px-4 py-2 bg-brand text-white rounded-xl text-sm font-bold"
+          >
+            返回上一頁
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      function closeBar() {
+        document.getElementById("bar").style.display = "none";
+        document.getElementById("header").style.top = "0";
+        localStorage.setItem("scarlette_bar", "1");
+      }
+      if (localStorage.getItem("scarlette_bar")) {
+        document.getElementById("bar").style.display = "none";
+        document.getElementById("header").style.top = "0";
+      }
+      function openModal(t) {
+        document.getElementById("mTitle").innerText = t;
+        document.getElementById("mDesc").innerText =
+          "這是「" + t + "」的概念展示頁面，請返回上一頁。";
+        document.getElementById("modal").classList.remove("hidden");
+      }
+      function closeModal() {
+        document.getElementById("modal").classList.add("hidden");
+      }
+    </script>
+  </body>
 </html>
